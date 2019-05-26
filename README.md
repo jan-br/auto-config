@@ -25,6 +25,7 @@ via @Configuration.
 public final class ExampleConfiguration extends ConfigurationAccessor{
 
 	//All Types of Dependency Injection can be used here.
+	//Use modifier transient to mark fields which you don't want to be serialized.
 	private final transient Injector injector; 
 
 	private String name = "Jan Brachthäuser";
