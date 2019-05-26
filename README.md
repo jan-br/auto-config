@@ -34,13 +34,13 @@ public final class ExampleConfiguration extends ConfigurationAccessor{
 	}
 
 	public ExampleConfiguration setAge(int age){
-		if(age < 0) throw new InvalidArgumentException("Age must not be < 0."); 
+		if(age < 0) throw new IllegalArgumentException("Age must not be < 0."); 
 		this.age = age;
 		return this;
 	}
 
 	public ExampleConfiguration setName(String name){
-		if(age == null || age.isEmpty()) throw new InvalidArgumentException("Name must not be empty.");
+		if(age == null || age.isEmpty()) throw new IllegalArgumentException("Name must not be empty.");
 		this.name = name;
 		return this;
 	}
