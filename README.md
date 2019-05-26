@@ -6,6 +6,7 @@ but will support standalone usage in the future.
 
 ## Supported Formats:
 **Auto-Config supports at the time the following configuration formats:**
+
 |Format|Implemented with|
 |:----:|:--------------:|
 |JSON|[json-simple](https://github.com/fangyidong/json-simple)|
