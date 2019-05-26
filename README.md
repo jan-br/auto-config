@@ -80,7 +80,8 @@ public class GuiceTest {
 }
 ```
 
-**Usage without Guice:**
+## Examples without Guice:
+
 *ExampleConfiguration:*
 ```java
 @Configuration(path = "./test.json", type = JsonConfigurationType.class)
