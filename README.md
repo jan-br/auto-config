@@ -19,22 +19,32 @@ via @Configuration.
 
 *ExampleConfiguration:*
 ```java
-@Singleton
+
+@Singleton //only used to prevent guice from creating multiple instances
 @Configuration(path = "./test.json", type = JsonConfigurationType.class)
 public final class ExampleConfiguration extends ConfigurationAccessor{
+
+	//All Types of Dependency Injection can be used here.
+	private final transient Injector injector; 
+
 	private String name = "Jan Brachthäuser";
-	private int age = 18;
-	
+	private Long age = 18L;
+
+	@Inject
+	private ExampleConfiguration(Injector injector) {
+		this.injector = injector;
+	}
+
 	public String getName(){
 		return this.name;
 	}
-	
-	public int getAge(){
+
+	public long getAge(){
 		return this.age;
 	}
 
-	public ExampleConfiguration setAge(int age){
-		if(age < 0) throw new IllegalArgumentException("Age must not be < 0."); 
+	public ExampleConfiguration setAge(long age){
+		if(age < 0) throw new IllegalArgumentException("Age must not be < 0.");
 		this.age = age;
 		return this;
 	}
@@ -46,34 +56,29 @@ public final class ExampleConfiguration extends ConfigurationAccessor{
 	}
 }
 ```
-*Program entry point:*
+*Usage:*
 ```java
-public final class ExampleProgram{
-	
-	public static void main(String[] args){
-		Guice.createInjector().getInstance(Test.class);
-	}
-	
-}
-```
-*Configuration Usage:*
-```java
-public final class Test{
+public class GuiceTest {
+
 	private final ExampleConfiguration exampleConfiguration;
 
 	@Inject
-	private Test(ExampleConfiguration exampleConfiguration){
-		//Will be autocreated at this point if file doesn't exist and load all default values in it.
+	private GuiceTest(ExampleConfiguration exampleConfiguration) {
 		this.exampleConfiguration = exampleConfiguration;
 		this.init();
 	}
 
-	public void init(){
+	private void init() {
 		System.out.println(exampleConfiguration.getName()); //Will return 'Jan Brachthäuser' by default.
+
 		exampleConfiguration.setName("Nobody");
 		exampleConfiguration.save(); //Will save the configuration in the given format to the file specified in @Configuration.
-		
+
 		System.out.println(exampleConfiguration.getName()); //Will return 'Nobody' now.
+	}
+
+	public static void main(String[] args) {
+		Guice.createInjector().getInstance(GuiceTest.class);
 	}
 }
 ```
