@@ -12,10 +12,7 @@ but will support standalone usage in the future.
 |JSON|[json-simple](https://github.com/fangyidong/json-simple)|
 |Yaml|`In Development`|
 
-## Examples
-**Usage with Guice:**
-In usage with Guice auto-config is able to autocreate the configuration and format it to a given ConfigurationType
-via @Configuration. 
+## Examples with Guice
 
 *ExampleConfiguration:*
 ```java
