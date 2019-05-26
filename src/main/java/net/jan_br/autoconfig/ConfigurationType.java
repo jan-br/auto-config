@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-public interface ConfigurationBase<T extends ConfigurationPath> {
+public interface ConfigurationType<T extends ConfigurationPath> {
 
     void save(ConfigurationAccessor configurationAccessor);
 

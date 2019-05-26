@@ -11,6 +11,6 @@ public @interface Configuration {
 
   String path();
 
-  Class<? extends ConfigurationBase<?>> configurationType();
+  Class<? extends ConfigurationType<?>> type();
 
 }

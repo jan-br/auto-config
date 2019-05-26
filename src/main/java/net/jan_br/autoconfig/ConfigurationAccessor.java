@@ -1,19 +1,38 @@
 package net.jan_br.autoconfig;
 
-public class ConfigurationAccessor {
+import com.google.inject.Injector;
 
-    private ConfigurationBase configurationBase;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
-    public void save() {
-        System.out.println(this.configurationBase);
-        this.configurationBase.save(this);
+public abstract class ConfigurationAccessor {
+
+  private transient ConfigurationType configurationType;
+
+  protected ConfigurationAccessor() {
+    Configuration configuration = this.getClass().getDeclaredAnnotation(Configuration.class);
+    if (configuration == null) throw new NullPointerException("@Configuration is missing.");
+    try {
+      Constructor<? extends ConfigurationType<?>> declaredConstructor =
+          configuration.type().getDeclaredConstructor(Configuration.class);
+      declaredConstructor.setAccessible(true);
+      this.configurationType = declaredConstructor.newInstance(configuration);
+      this.configurationType.init(this);
+    } catch (NoSuchMethodException
+        | IllegalAccessException
+        | InstantiationException
+        | InvocationTargetException e) {
+      e.printStackTrace();
     }
+  }
 
-    public void delete() {
-        this.configurationBase.delete();
-    }
+  public void save() {
+    this.configurationType.save(this);
+  }
 
-    protected void setConfigurationBase(ConfigurationBase configurationBase) {
-        this.configurationBase = configurationBase;
-    }
+  public void delete() {
+    this.configurationType.delete();
+  }
+
+  public abstract void loadDefaults();
 }
