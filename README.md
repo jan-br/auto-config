@@ -19,7 +19,6 @@ via @Configuration.
 
 *ExampleConfiguration:*
 ```java
-
 @Singleton //only used to prevent guice from creating multiple instances
 @Configuration(path = "./test.json", type = JsonConfigurationType.class)
 public final class ExampleConfiguration extends ConfigurationAccessor{
@@ -85,4 +84,59 @@ public class GuiceTest {
 ```
 
 **Usage without Guice:**
-not supportet yet.
+*ExampleConfiguration:*
+```java
+@Configuration(path = "./test.json", type = JsonConfigurationType.class)
+public final class ExampleConfiguration extends ConfigurationAccessor{
+
+
+  private String name = "Jan Brachthäuser";
+  private Long age = 18L;
+
+  public String getName(){
+    return this.name;
+  }
+
+  public long getAge(){
+    return this.age;
+  }
+
+  public ExampleConfiguration setAge(long age){
+    if(age < 0) throw new IllegalArgumentException("Age must not be < 0.");
+    this.age = age;
+    return this;
+  }
+
+  public ExampleConfiguration setName(String name){
+    if(name == null || name.isEmpty()) throw new IllegalArgumentException("Name must not be empty.");
+    this.name = name;
+    return this;
+  }
+}
+```
+*Usage:*
+```java
+public final class NoGuiceTest {
+
+  private ExampleConfiguration exampleConfiguration;
+
+  private NoGuiceTest() {
+    this.exampleConfiguration = new ExampleConfiguration();
+    this.init();
+  }
+
+  private void init() {
+    System.out.println(exampleConfiguration.getName()); //Will return 'Jan Brachthäuser' by default.
+
+    exampleConfiguration.setName("Nobody");
+    exampleConfiguration.save(); //Will save the configuration in the given format to the file specified in @Configuration.
+
+    System.out.println(exampleConfiguration.getName()); //Will return 'Nobody' now.
+  }
+
+
+  public static void main(String[] args) {
+    new NoGuiceTest();
+  }
+}
+```
