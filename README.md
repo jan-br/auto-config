@@ -40,7 +40,7 @@ public final class ExampleConfiguration extends ConfigurationAccessor{
 	}
 
 	public ExampleConfiguration setName(String name){
-		if(age == null || age.isEmpty()) throw new IllegalArgumentException("Name must not be empty.");
+		if(name == null || name.isEmpty()) throw new IllegalArgumentException("Name must not be empty.");
 		this.name = name;
 		return this;
 	}
