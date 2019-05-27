@@ -2,7 +2,7 @@
 
 Auto-Config is an easy, lightweight and simple to use way to create object-related configurations in many different formats.
 It is meant to be used with the dependency framework [guice by google](https://github.com/google/guice) 
-but will support standalone usage in the future.
+but also supports standalone usage.
 
 ## Supported Formats:
 **Auto-Config supports at the time the following configuration formats:**
