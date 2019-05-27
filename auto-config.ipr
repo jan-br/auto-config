@@ -6,9 +6,19 @@
   </component>
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="auto-config.main" target="1.8" />
+      <module name="auto-config.test" target="1.8" />
       <module name="main" target="1.8" />
       <module name="test" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/test.json" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/test.json" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/test.json" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/test.json" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/test.json" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/test.json" charset="UTF-8" />
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="GoogleJavaFormatSettings">
@@ -162,6 +172,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/auto-config.iml" filepath="$PROJECT_DIR$/auto-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/auto-config.main.iml" filepath="$PROJECT_DIR$/auto-config.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/auto-config.test.iml" filepath="$PROJECT_DIR$/auto-config.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/main.iml" filepath="$PROJECT_DIR$/main.iml" />
       <module fileurl="file://$PROJECT_DIR$/test.iml" filepath="$PROJECT_DIR$/test.iml" />
     </modules>
@@ -180,6 +192,17 @@
       <JAVADOC />
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/aopalliance/aopalliance/1.0/4a4b6d692e17846a9f3da036438a7ac491d3c814/aopalliance-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Gradle: com.google.code.gson:gson:2.8.5">
+      <CLASSES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.5/f645ed69d595b24d4cf8b3fbb64cc505bede8829/gson-2.8.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.5/a2841d93c258a70e320be81586e92208a60144f2/gson-2.8.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.5/c5b4c491aecb72e7c32a78da0b5c6b9cda8dee0f/gson-2.8.5-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.google.guava:guava:16.0.1">

@@ -13,7 +13,7 @@ public abstract class ConfigurationAccessor {
     Configuration configuration = this.getClass().getDeclaredAnnotation(Configuration.class);
     if (configuration == null) throw new NullPointerException("@Configuration is missing.");
     try {
-      Constructor<? extends ConfigurationType<?>> declaredConstructor =
+      Constructor<? extends ConfigurationType> declaredConstructor =
           configuration.type().getDeclaredConstructor(Configuration.class);
       declaredConstructor.setAccessible(true);
       this.configurationType = declaredConstructor.newInstance(configuration);
@@ -31,7 +31,7 @@ public abstract class ConfigurationAccessor {
   }
 
   public void delete() {
-    this.configurationType.delete();
+    this.configurationType.delete(this);
   }
 
   public abstract void loadDefaults();
