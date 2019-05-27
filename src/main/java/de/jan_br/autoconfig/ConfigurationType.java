@@ -1,4 +1,4 @@
-package net.jan_br.autoconfig;
+package de.jan_br.autoconfig;
 
 public interface ConfigurationType {
 

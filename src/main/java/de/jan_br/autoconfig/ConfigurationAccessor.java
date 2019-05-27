@@ -1,6 +1,4 @@
-package net.jan_br.autoconfig;
-
-import com.google.inject.Injector;
+package de.jan_br.autoconfig;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

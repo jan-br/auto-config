@@ -1,4 +1,4 @@
-package net.jan_br.autoconfig;
+package de.jan_br.autoconfig;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

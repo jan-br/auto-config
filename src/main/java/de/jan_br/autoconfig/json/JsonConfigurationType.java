@@ -1,11 +1,11 @@
-package net.jan_br.autoconfig.json;
+package de.jan_br.autoconfig.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import net.jan_br.autoconfig.Configuration;
-import net.jan_br.autoconfig.ConfigurationAccessor;
-import net.jan_br.autoconfig.ConfigurationType;
+import de.jan_br.autoconfig.Configuration;
+import de.jan_br.autoconfig.ConfigurationAccessor;
+import de.jan_br.autoconfig.ConfigurationType;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
