@@ -9,86 +9,61 @@ but will support standalone usage in the future.
 
 |Format|Implemented with|
 |:----:|:--------------:|
-|JSON|[json-simple](https://github.com/fangyidong/json-simple)|
+|JSON|[Gson](https://github.com/google/gson)|
 |Yaml|`In Development`|
 
 ## Examples with Guice
 
 *ExampleConfiguration:*
 ```java
-@Singleton
-@Configuration(path = "./test.json", type = JsonConfigurationType.class)
-public final class ExampleConfiguration extends ConfigurationAccessor {
+@Singleton //Used to mark this class as a Singleton for Guice.
+@Configuration(path = "example.json", type = JsonConfigurationType.class)
+public class ExampleConfig extends ConfigurationAccessor {
 
-    //All Types of Dependency Injection can be used here.
-    //Use modifier transient to mark fields which you don't want to be serialized.
-    private final transient Injector injector;
+  private final transient Injector injector; //Any type of dependency injection is possible here.
+  private transient String test; //transient fields will be ignored
+  private String name;
 
-    private String name;
-    private Long age;
+  @Inject
+  private ExampleConfig(Injector injector) {
+    this.injector = injector;
+  }
 
-    @Inject
-    private ExampleConfiguration(Injector injector) {
-        this.injector = injector;
-    }
 
-    /**
-     * This method is required because a lazy initialized field would badly break the simple
-     * configuration design. The configuration values are initialized after the super constructor, so
-     * NEVER use a direct initialization in the class, always use loadDefaults otherwise the value
-     * will not be loaded into the field.
-     */
-    public void loadDefaults() {
-        this.name = "Jan Brachthäuser";
-        this.age = 18L;
-    }
+  public void loadDefaults() {
+    name = "Jan Brachthäuser";
+    test = "Test";
+  }
 
-    public String getName() {
-        return this.name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public long getAge() {
-        return this.age;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public ExampleConfiguration setAge(long age) {
-        if (age < 0) throw new IllegalArgumentException("Age must not be < 0.");
-        this.age = age;
-        return this;
-    }
-
-    public ExampleConfiguration setName(String name) {
-        if (name == null || name.isEmpty())
-            throw new IllegalArgumentException("Name must not be empty.");
-        this.name = name;
-        return this;
-    }
 }
+
 ```
 *Usage:*
 ```java
 public class GuiceTest {
 
-	private final ExampleConfiguration exampleConfiguration;
+  private final ExampleConfig exampleConfig;
 
-	@Inject
-	private GuiceTest(ExampleConfiguration exampleConfiguration) {
-		this.exampleConfiguration = exampleConfiguration;
-		this.init();
-	}
+  @Inject
+  public GuiceTest(ExampleConfig exampleConfig) {
+    this.exampleConfig = exampleConfig;
+    System.out.println(this.exampleConfig.getName()); //Default: "Jan Brachthäuser"
+    this.exampleConfig.setName("Melvin");
+    this.exampleConfig.save();
+    System.out.println(this.exampleConfig.getName()); //Now: "Melvin"
+  }
 
-	private void init() {
-		System.out.println(exampleConfiguration.getName()); //Will return 'Jan Brachthäuser' by default.
-
-		exampleConfiguration.setName("Nobody");
-		exampleConfiguration.save(); //Will save the configuration in the given format to the file specified in @Configuration.
-
-		System.out.println(exampleConfiguration.getName()); //Will return 'Nobody' now.
-	}
-
-	public static void main(String[] args) {
-		Guice.createInjector().getInstance(GuiceTest.class);
-	}
+  public static void main(String[] args) {
+    Guice.createInjector().getInstance(GuiceTest.class);
+  }
 }
 ```
 
@@ -96,53 +71,37 @@ public class GuiceTest {
 
 *ExampleConfiguration:*
 ```java
-@Configuration(path = "./test.json", type = JsonConfigurationType.class)
-public final class ExampleConfiguration extends ConfigurationAccessor {
 
-    private String name;
-    private Long age;
+@Configuration(path = "example.json", type = JsonConfigurationType.class)
+public class ExampleConfig extends ConfigurationAccessor {
 
-    /**
-     * This method is required because a lazy initialized field would badly break the simple
-     * configuration design. The configuration values are initialized after the super constructor, so
-     * NEVER use a direct initialization in the class, always use loadDefaults otherwise the value
-     * will not be loaded into the field.
-     */
-    public void loadDefaults() {
-        this.name = "Jan Brachthäuser";
-        this.age = 18L;
-    }
+  private transient String test; //transient fields will be ignored
+  private String name;
 
-    public String getName() {
-        return this.name;
-    }
 
-    public long getAge() {
-        return this.age;
-    }
+  public void loadDefaults() {
+    name = "Jan Brachthäuser";
+    test = "Test";
+  }
 
-    public ExampleConfiguration setAge(long age) {
-        if (age < 0) throw new IllegalArgumentException("Age must not be < 0.");
-        this.age = age;
-        return this;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public ExampleConfiguration setName(String name) {
-        if (name == null || name.isEmpty())
-            throw new IllegalArgumentException("Name must not be empty.");
-        this.name = name;
-        return this;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
+
 }
 ```
 *Usage:*
 ```java
 public final class NoGuiceTest {
 
-  private ExampleConfiguration exampleConfiguration;
+  private ExampleConfig exampleConfiguration;
 
   private NoGuiceTest() {
-    this.exampleConfiguration = new ExampleConfiguration();
+    this.exampleConfiguration = new ExampleConfig();
     this.init();
   }
 
