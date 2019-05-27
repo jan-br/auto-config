@@ -54,11 +54,12 @@ public class GuiceTest {
 
   @Inject
   public GuiceTest(ExampleConfig exampleConfig) {
-    this.exampleConfig = exampleConfig;
-    System.out.println(this.exampleConfig.getName()); //Default: "Jan Brachthäuser"
-    this.exampleConfig.setName("Melvin");
-    this.exampleConfig.save();
-    System.out.println(this.exampleConfig.getName()); //Now: "Melvin"
+      System.out.println(exampleConfiguration.getName()); //Will return 'Jan Brachthäuser' by default.
+
+    exampleConfiguration.setName("Melvin");
+    exampleConfiguration.save(); //Will save the configuration in the given format to the file specified in @Configuration.
+
+    System.out.println(exampleConfiguration.getName()); //Will return 'Melvin' now.
   }
 
   public static void main(String[] args) {
@@ -108,10 +109,10 @@ public final class NoGuiceTest {
   private void init() {
     System.out.println(exampleConfiguration.getName()); //Will return 'Jan Brachthäuser' by default.
 
-    exampleConfiguration.setName("Nobody");
+    exampleConfiguration.setName("Melvin");
     exampleConfiguration.save(); //Will save the configuration in the given format to the file specified in @Configuration.
 
-    System.out.println(exampleConfiguration.getName()); //Will return 'Nobody' now.
+    System.out.println(exampleConfiguration.getName()); //Will return 'Melvin' now.
   }
 
 
