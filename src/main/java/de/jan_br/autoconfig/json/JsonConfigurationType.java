@@ -3,6 +3,7 @@ package de.jan_br.autoconfig.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import de.jan_br.autoconfig.Configuration;
 import de.jan_br.autoconfig.ConfigurationAccessor;
 import de.jan_br.autoconfig.ConfigurationType;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class JsonConfigurationType implements ConfigurationType {
@@ -32,17 +34,39 @@ public class JsonConfigurationType implements ConfigurationType {
       this.save(accessor);
     }
     try {
-      Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
+      Type mapType = new TypeToken<Map<String, Object>>() {
+      }.getType();
       Map<String, Object> map =
-          gson.fromJson(
-              new String(
-                  FileUtils.readFileToString(file, Charset.defaultCharset()).getBytes("ISO-8859-1"),
-                  "UTF-8"),
-              mapType);
+              gson.fromJson(
+                      new String(
+                              FileUtils.readFileToString(file, StandardCharsets.UTF_8).getBytes(StandardCharsets.UTF_8),
+                              "UTF-8"),
+                      mapType);
       for (Map.Entry<String, Object> entry : map.entrySet()) {
         Field declaredField = accessor.getClass().getDeclaredField(entry.getKey());
         declaredField.setAccessible(true);
-        declaredField.set(accessor, declaredField.getType().cast(entry.getValue()));
+
+        Object value = entry.getValue();
+        if (declaredField.getType().isAssignableFrom(double.class)) {
+          declaredField.setDouble(accessor, ((Number) value).doubleValue());
+        } else if (declaredField.getType().isAssignableFrom(int.class)) {
+          declaredField.setInt(accessor, ((Number) value).intValue());
+        } else if (declaredField.getType().isAssignableFrom(float.class)) {
+          declaredField.setFloat(accessor, ((Number) value).floatValue());
+        } else if (declaredField.getType().isAssignableFrom(byte.class)) {
+          declaredField.setByte(accessor, ((Number) value).byteValue());
+        } else if (declaredField.getType().isAssignableFrom(short.class)) {
+          declaredField.setShort(accessor, ((Number) value).shortValue());
+        } else if (declaredField.getType().isAssignableFrom(long.class)) {
+          declaredField.setLong(accessor, ((Number) value).longValue());
+        } else if (declaredField.getType().isAssignableFrom(boolean.class)) {
+          declaredField.setBoolean(accessor, ((Boolean) value).booleanValue());
+        } else if (declaredField.getType().isAssignableFrom(char.class)) {
+          declaredField.setChar(accessor, ((Character) value).charValue());
+        } else {
+          declaredField.set(accessor, declaredField.getType().cast(entry.getValue()));
+        }
+
       }
     } catch (IOException | NoSuchFieldException | IllegalAccessException e) {
       e.printStackTrace();
