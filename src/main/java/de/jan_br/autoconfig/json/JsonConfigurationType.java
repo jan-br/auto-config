@@ -42,7 +42,7 @@ public class JsonConfigurationType implements ConfigurationType {
       for (Map.Entry<String, Object> entry : map.entrySet()) {
         Field declaredField = accessor.getClass().getDeclaredField(entry.getKey());
         declaredField.setAccessible(true);
-        declaredField.set(accessor, entry.getValue());
+        declaredField.set(accessor, declaredField.getType().cast(entry.getValue()));
       }
     } catch (IOException | NoSuchFieldException | IllegalAccessException e) {
       e.printStackTrace();
