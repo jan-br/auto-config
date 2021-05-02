@@ -3,7 +3,6 @@ package de.jan_br.autoconfig.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import de.jan_br.autoconfig.Configuration;
 import de.jan_br.autoconfig.ConfigurationAccessor;
 import de.jan_br.autoconfig.ConfigurationType;
@@ -14,7 +13,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -37,11 +35,11 @@ public class JsonConfigurationType implements ConfigurationType {
       Type mapType = new TypeToken<Map<String, Object>>() {
       }.getType();
       Map<String, Object> map =
-              gson.fromJson(
-                      new String(
-                              FileUtils.readFileToString(file, StandardCharsets.UTF_8).getBytes(StandardCharsets.UTF_8),
-                              "UTF-8"),
-                      mapType);
+          gson.fromJson(
+              new String(
+                  FileUtils.readFileToString(file, StandardCharsets.UTF_8).getBytes(StandardCharsets.UTF_8),
+                  "UTF-8"),
+              mapType);
       for (Map.Entry<String, Object> entry : map.entrySet()) {
         Field declaredField = accessor.getClass().getDeclaredField(entry.getKey());
         declaredField.setAccessible(true);
@@ -64,7 +62,11 @@ public class JsonConfigurationType implements ConfigurationType {
         } else if (declaredField.getType().isAssignableFrom(char.class)) {
           declaredField.setChar(accessor, ((Character) value).charValue());
         } else {
-          declaredField.set(accessor, declaredField.getType().cast(entry.getValue()));
+          if (declaredField.getType().isInstance(entry.getValue())) {
+            declaredField.set(accessor, declaredField.getType().cast(entry.getValue()));
+          } else {
+            declaredField.set(accessor, gson.fromJson(gson.toJsonTree(entry.getValue()), declaredField.getType()));
+          }
         }
 
       }
